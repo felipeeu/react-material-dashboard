@@ -32,6 +32,11 @@ const user = {
 
 const items = [
   {
+    href: '/cadastro/data',
+    icon: UserPlusIcon,
+    title: 'Cadastro'
+  },
+  {
     href: '/app/dashboard',
     icon: BarChartIcon,
     title: 'Dashboard'

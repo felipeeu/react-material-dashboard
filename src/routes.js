@@ -10,6 +10,10 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
+import DataForm from 'src/views/data/index'
+import AddressForm from 'src/views/address/index'
+import ContactForm from 'src/views/contact/index'
+import AssetsForm from 'src/views/assets/index'
 
 const routes = [
   {
@@ -21,9 +25,24 @@ const routes = [
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
+     
+
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
+
+  {
+    path: '/cadastro',
+    element: <DashboardLayout />,
+    children: [
+      { path: 'data', element: <DataForm /> },
+      { path: 'address', element: <AddressForm /> },
+      { path: 'contact', element: <ContactForm /> },
+      { path: 'assets', element: <AssetsForm /> },
+      { path: '*', element: <Navigate to="/404" /> }
+    ]
+  },
+
   {
     path: '/',
     element: <MainLayout />,
