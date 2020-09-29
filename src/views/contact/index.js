@@ -13,14 +13,14 @@ import {
 import SaveIcon from '@material-ui/icons/Save';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {cardStyle} from "../data/index"
+import { cardStyle } from '../data/index';
 
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'red',
     color: props => props.color
   },
-  card: {...cardStyle}
+  card: { ...cardStyle }
 });
 
 const ContactForm = () => {
@@ -125,7 +125,15 @@ const ContactForm = () => {
               </Grid>
             </Grid>
           </CardContent>
-          <Grid display="flex" direction="row-reverse" container>
+          <Grid
+            display="flex"
+            direction="row"
+            justify="space-between"
+            container
+          >
+            <Button onClick={() => navigate('/cadastro/address')} item>
+              Voltar
+            </Button>
             <Button onClick={() => navigate('/cadastro/assets')} item>
               Avançar
             </Button>

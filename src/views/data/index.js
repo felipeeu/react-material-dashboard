@@ -12,12 +12,15 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel
+  InputLabel,
+  InputAdornment
 } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import MaskedInput from 'react-text-mask';
+import DoneIcon from '@material-ui/icons/Done';
+import Forward from '../../icons/Forward';
+import * as Yup from 'yup';
 
 export const cardStyle = {
   margin: '40px'
@@ -33,48 +36,52 @@ const useStyles = makeStyles({
   }
 });
 
-function TextMaskCustom() {
-  return (
-    <MaskedInput
-      mask={[
-        '(',
-        /[1-9]/,
-        /\d/,
-        /\d/,
-        ')',
-        ' ',
-        /\d/,
-        /\d/,
-        /\d/,
-        '-',
-        /\d/,
-        /\d/,
-        /\d/,
-        /\d/
-      ]}
-      placeholderChar={'\u2000'}
-      variant={'outlined'}
-      showMask
-    />
-  );
-}
+const inputValid = {
+  endAdornment: (
+    <InputAdornment position="end">
+      <DoneIcon />
+    </InputAdornment>
+  )
+};
 
 const DataForm = () => {
+  const [dataState, setDataState] = React.useState({
+    razao_social: '',
+    nome_fantasia: '',
+    cnpj: '',
+    inscricao_estadual: '',
+    data_abertura: '',
+    tipo_empresa: ''
+  });
+  const [validBlur, setBlur] = React.useState({ social: false, name: false });
   const classes = useStyles();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      razao_social: '',
-      nome_fantasia: '',
-      cnpj: '',
-      inscricao_estadual: '',
-      data_abertura: '',
-      tipo_empresa: ''
+      ...dataState
     },
+
+    validationSchema: Yup.object({
+      razao_social: Yup.string().required('Campo Obrigatório'),
+      nome_fantasia: Yup.string().required('Campo Obrigatório'),
+      cnpj: Yup.string()
+        .length(14, 'Quantidade de caracteres fora do padrão para CNPJ')
+        .matches(/[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/)
+        .required('Campo Obrigatório'),
+      inscricao_estadual: Yup.string()
+        .length(9)
+        .matches(/^[0-9]*$/)
+        .required('Campo Obrigatório'),
+      data_abertura: Yup.string().required('Campo Obrigatório'),
+      tipo_empresa: Yup.string().required('Campo Obrigatório')
+    }),
+
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+      setDataState(values);
     }
   });
+
+ 
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -90,10 +97,20 @@ const DataForm = () => {
                   name="razao_social"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setBlur({ ...validBlur, social: true })}
                   value={formik.values.razao_social}
                   label="Razão Social"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.social &&
+                    formik.values.razao_social &&
+                    !formik.errors.razao_social ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -102,10 +119,20 @@ const DataForm = () => {
                   name="nome_fantasia"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setBlur({ ...validBlur, name: true })}
                   value={formik.values.nome_fantasia}
                   label="Nome Fantasia"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.name &&
+                    formik.values.nome_fantasia &&
+                    !formik.errors.nome_fantasia ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -115,10 +142,17 @@ const DataForm = () => {
                   type="cnpj"
                   onChange={formik.handleChange}
                   value={formik.values.cnpj}
-                  // label="CNPJ"
+                  label="CNPJ"
                   variant="outlined"
                   fullWidth
-                  inputComponent={TextMaskCustom}
+                  maxlength="14"
+                  InputProps={
+                    !formik.values.cnpj || formik.errors.cnpj ? (
+                      <>Erro</>
+                    ) : (
+                      inputValid
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -131,6 +165,14 @@ const DataForm = () => {
                   label="Inscrição Est./Munic"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    !formik.values.inscricao_estadual ||
+                    formik.errors.inscricao_estadual ? (
+                      <>Erro</>
+                    ) : (
+                      inputValid
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -142,19 +184,14 @@ const DataForm = () => {
                   value={formik.values.data_abertura}
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    !formik.values.data_abertura || formik.errors.data_abertura
+                      ? null
+                      : inputValid
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
-                {/* <TextField
-                  id="tipo_empresa"
-                  name="tipo_empresa"
-                  type="select"
-                  onChange={formik.handleChange}
-                  value={formik.values.tipo_empresa}
-                  label="Tipo de Empresa"
-                  variant="outlined"
-                  fullWidth
-                /> */}
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-outlined-label">
                     Tipo de Empresa
@@ -168,6 +205,11 @@ const DataForm = () => {
                     }
                     variant="outlined"
                     label=" Tipo de Empresa"
+                    InputProps={
+                      !formik.values.tipo_empresa || formik.errors.tipo_empresa
+                        ? null
+                        : inputValid
+                    }
                   >
                     <MenuItem value={`s_a_capital_aberto`}>
                       S.A. Capital Aberto
@@ -191,7 +233,12 @@ const DataForm = () => {
             </Grid>
           </CardContent>
           <Grid display="flex" direction="row-reverse" container>
-            <Button onClick={() => navigate('/cadastro/address')} item>
+            <Button
+              endIcon={<Forward />}
+              onClick={() => navigate('/cadastro/address')}
+              item
+              // disabled={}
+            >
               Avançar
             </Button>
           </Grid>
