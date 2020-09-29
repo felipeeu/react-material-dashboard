@@ -8,7 +8,11 @@ import {
   CardContent,
   Divider,
   Grid,
-  TextField
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@material-ui/core';
 import Forward from '../../icons/Forward';
 import Back from '../../icons/Back';
@@ -16,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { cardStyle } from '../data/index';
 import * as Yup from 'yup';
-import {inputValid} from '../data/index'
+import { inputValid } from '../data/index';
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +30,46 @@ const useStyles = makeStyles({
   card: { ...cardStyle }
 });
 
+const states = [
+  { initials: 'AC', name: 'Acre' },
+  { initials: 'AL', name: 'Alagoas' },
+  { initials: 'AP', name: 'Amapá' },
+  { initials: 'AM', name: 'Amazonas' },
+  { initials: 'BA', name: 'Bahia' },
+  { initials: 'CE', name: 'Ceará' },
+  { initials: 'DF', name: 'Distrito Federal' },
+  { initials: 'ES', name: 'Espírito Santo' },
+  { initials: 'GO', name: 'Goiás' },
+  { initials: 'MA', name: 'Maranhão' },
+  { initials: 'MT', name: 'Mato Grosso' },
+  { initials: 'MS', name: 'Mato Grosso do Sul' },
+  { initials: 'MG', name: 'Minas Gerais' },
+  { initials: 'PA', name: 'Pará' },
+  { initials: 'PB', name: 'Paraíba' },
+  { initials: 'PR', name: 'Paraná' },
+  { initials: 'PE', name: 'Pernambuco' },
+  { initials: 'PI', name: 'Piauí' },
+  { initials: 'RJ', name: 'Rio de Janeiro' },
+  { initials: 'RN', name: 'Rio Grande do Norte' },
+  { initials: 'RS', name: 'Rio Grande do Sul' },
+  { initials: 'RO', name: 'Rondônia' },
+  { initials: 'RR', name: 'Roraima' },
+  { initials: 'SC', name: 'Santa Catarina' },
+  { initials: 'SP', name: 'São Paulo' },
+  { initials: 'SE', name: 'Sergipe' },
+  { initials: 'TO', name: 'Tocantins' }
+];
+
 const AddressForm = () => {
+  const [validBlur, setValid] = React.useState({
+    endereco: false,
+    numero: false,
+    complemento: false,
+    bairro: false,
+    cidade: false,
+    estado: false,
+    pais: false
+  });
   const classes = useStyles();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -36,7 +79,9 @@ const AddressForm = () => {
       complemento: '',
       bairro: '',
       cep: '',
-      cidade: ''
+      cidade: '',
+      estado: '',
+      pais: ''
     },
     validationSchema: Yup.object({
       endereco: Yup.string().required('Campo Obrigatório'),
@@ -71,10 +116,20 @@ const AddressForm = () => {
                   name="endereco"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setValid({ ...validBlur, endereco: true })}
                   value={formik.values.endereco}
                   label="Endereço"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.endereco &&
+                    formik.values.endereco &&
+                    !formik.errors.endereco ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={2} xs="auto">
@@ -83,10 +138,20 @@ const AddressForm = () => {
                   name="numero"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setValid({ ...validBlur, numero: true })}
                   value={formik.values.numero}
                   label="Número"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.numero &&
+                    formik.values.numero &&
+                    !formik.errors.numero ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -95,10 +160,20 @@ const AddressForm = () => {
                   name="complemento"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setValid({ ...validBlur, complemento: true })}
                   value={formik.values.complemento}
                   label="Complemento"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.complemento &&
+                    formik.values.complemento &&
+                    !formik.errors.complemento ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -107,10 +182,20 @@ const AddressForm = () => {
                   name="bairro"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setValid({ ...validBlur, bairro: true })}
                   value={formik.values.bairro}
                   label="Bairro"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.bairro &&
+                    formik.values.bairro &&
+                    !formik.errors.bairro ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -138,23 +223,44 @@ const AddressForm = () => {
                   name="cidade"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setValid({ ...validBlur, cidade: true })}
                   value={formik.values.cidade}
                   label="Cidade"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.cidade &&
+                    formik.values.cidade &&
+                    !formik.errors.cidade ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
-                <TextField
-                  id="estado"
-                  name="estado"
-                  type="select"
-                  onChange={formik.handleChange}
-                  value={formik.values.estado}
-                  label="Estado"
-                  variant="outlined"
-                  fullWidth
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-outlined-label">
+                    Estado
+                  </InputLabel>
+                  <Select
+                    id="estado"
+                    name="estado"
+                    type="select"
+                    onChange={formik.handleChange}
+                    value={formik.values.estado}
+                    label="Estado"
+                    variant="outlined"
+                    fullWidth
+                  >
+                    {states.map((state, idx) => (
+                      <MenuItem key={idx} value={state.initials}>
+                        {state.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item md={4} xs="auto">
                 <TextField
@@ -162,10 +268,20 @@ const AddressForm = () => {
                   name="pais"
                   type="text"
                   onChange={formik.handleChange}
+                  onBlur={() => setValid({ ...validBlur, pais: true })}
                   value={formik.values.pais}
                   label="País"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    validBlur.pais &&
+                    formik.values.pais &&
+                    !formik.errors.pais ? (
+                      inputValid
+                    ) : (
+                      <>Erro</>
+                    )
+                  }
                 />
               </Grid>
             </Grid>
