@@ -12,12 +12,14 @@ import {
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import { makeStyles } from '@material-ui/core/styles';
+import { cardStyle } from '../data/index';
 
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'red',
     color: props => props.color
-  }
+  },
+  card: { ...cardStyle }
 });
 
 const AssetsForm = () => {
@@ -43,7 +45,7 @@ const AssetsForm = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box alignItems="center" display="flex" flexDirection="column">
-        <Card>
+        <Card className={classes.card}>
           <CardHeader subheader="" title="Dados Financeiros" />
           <Divider />
           <CardContent>

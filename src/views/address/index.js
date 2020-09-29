@@ -13,12 +13,14 @@ import {
 import SaveIcon from '@material-ui/icons/Save';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { cardStyle } from '../data/index';
 
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'red',
     color: props => props.color
-  }
+  },
+  card: { ...cardStyle }
 });
 
 const AddressForm = () => {
@@ -41,7 +43,7 @@ const AddressForm = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box alignItems="center" display="flex" flexDirection="column">
-        <Card>
+        <Card className={classes.card}>
           <CardHeader
             subheader="Preencha aqui com os dados de localização"
             title="Endereço"

@@ -8,18 +8,56 @@ import {
   CardContent,
   Divider,
   Grid,
-  TextField
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import MaskedInput from 'react-text-mask';
+
+export const cardStyle = {
+  margin: '40px'
+};
 
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'red',
     color: props => props.color
+  },
+  card: {
+    ...cardStyle
   }
 });
+
+function TextMaskCustom() {
+  return (
+    <MaskedInput
+      mask={[
+        '(',
+        /[1-9]/,
+        /\d/,
+        /\d/,
+        ')',
+        ' ',
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/
+      ]}
+      placeholderChar={'\u2000'}
+      variant={'outlined'}
+      showMask
+    />
+  );
+}
 
 const DataForm = () => {
   const classes = useStyles();
@@ -41,7 +79,7 @@ const DataForm = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box alignItems="center" display="flex" flexDirection="column">
-        <Card>
+        <Card className={classes.card}>
           <CardHeader subheader="" title="Dados cadastrais" />
           <Divider />
           <CardContent>
@@ -77,9 +115,10 @@ const DataForm = () => {
                   type="cnpj"
                   onChange={formik.handleChange}
                   value={formik.values.cnpj}
-                  label="CNPJ"
+                  // label="CNPJ"
                   variant="outlined"
                   fullWidth
+                  inputComponent={TextMaskCustom}
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -106,7 +145,7 @@ const DataForm = () => {
                 />
               </Grid>
               <Grid item md={4} xs="auto">
-                <TextField
+                {/* <TextField
                   id="tipo_empresa"
                   name="tipo_empresa"
                   type="select"
@@ -115,7 +154,39 @@ const DataForm = () => {
                   label="Tipo de Empresa"
                   variant="outlined"
                   fullWidth
-                />
+                /> */}
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-outlined-label">
+                    Tipo de Empresa
+                  </InputLabel>
+                  <Select
+                    id="tipo_empresa"
+                    name="tipo_empresa"
+                    value={formik.values.tipo_empresa}
+                    onChange={e =>
+                      formik.setFieldValue('tipo_empresa', e.target.value)
+                    }
+                    variant="outlined"
+                    label=" Tipo de Empresa"
+                  >
+                    <MenuItem value={`s_a_capital_aberto`}>
+                      S.A. Capital Aberto
+                    </MenuItem>
+                    <MenuItem value={`s_a_capital_fechado`}>
+                      S.A. CApital Fechado
+                    </MenuItem>
+                    <MenuItem value={`sociedade_economia_mista`}>
+                      Sociedade de Economia Mista
+                    </MenuItem>
+                    <MenuItem value={`sociedade_limitada`}>
+                      Sociedade Limitada
+                    </MenuItem>
+                    <MenuItem value={`sociedade_simples`}>
+                      Sociedade Simples
+                    </MenuItem>
+                    <MenuItem value={`outros`}>Outros</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
           </CardContent>
