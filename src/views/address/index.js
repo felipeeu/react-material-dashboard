@@ -11,9 +11,12 @@ import {
   TextField
 } from '@material-ui/core';
 import Forward from '../../icons/Forward';
+import Back from '../../icons/Back';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { cardStyle } from '../data/index';
+import * as Yup from 'yup';
+import {inputValid} from '../data/index'
 
 const useStyles = makeStyles({
   root: {
@@ -35,6 +38,17 @@ const AddressForm = () => {
       cep: '',
       cidade: ''
     },
+    validationSchema: Yup.object({
+      endereco: Yup.string().required('Campo Obrigatório'),
+      numero: Yup.string().required('Campo Obrigatório'),
+      complemento: Yup.string().required('Campo Obrigatório'),
+      bairro: Yup.string().required('Campo Obrigatório'),
+      cep: Yup.string()
+        .matches(/^[0-9]*$/)
+        .length(8)
+        .required('Campo Obrigatório'),
+      cidade: Yup.string().required('Campo Obrigatório')
+    }),
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
     }
@@ -109,6 +123,13 @@ const AddressForm = () => {
                   label="CEP"
                   variant="outlined"
                   fullWidth
+                  InputProps={
+                    !formik.values.cep || formik.errors.cep ? (
+                      <>Erro</>
+                    ) : (
+                      inputValid
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -155,7 +176,11 @@ const AddressForm = () => {
             justify="space-between"
             container
           >
-            <Button onClick={() => navigate('/cadastro/data')} item>
+            <Button
+              startIcon={<Back />}
+              onClick={() => navigate('/cadastro/data')}
+              item
+            >
               Voltar
             </Button>
             <Button

@@ -36,7 +36,7 @@ const useStyles = makeStyles({
   }
 });
 
-const inputValid = {
+export const inputValid = {
   endAdornment: (
     <InputAdornment position="end">
       <DoneIcon />
@@ -205,11 +205,7 @@ const DataForm = () => {
                     }
                     variant="outlined"
                     label=" Tipo de Empresa"
-                    InputProps={
-                      !formik.values.tipo_empresa || formik.errors.tipo_empresa
-                        ? null
-                        : inputValid
-                    }
+                    
                   >
                     <MenuItem value={`s_a_capital_aberto`}>
                       S.A. Capital Aberto

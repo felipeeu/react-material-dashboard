@@ -10,7 +10,8 @@ import {
   Grid,
   TextField
 } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import Forward from '../../icons/Forward';
+import Back from '../../icons/Back';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { cardStyle } from '../data/index';
@@ -131,10 +132,18 @@ const ContactForm = () => {
             justify="space-between"
             container
           >
-            <Button onClick={() => navigate('/cadastro/address')} item>
+            <Button
+              startIcon={<Back />}
+              onClick={() => navigate('/cadastro/address')}
+              item
+            >
               Voltar
             </Button>
-            <Button onClick={() => navigate('/cadastro/assets')} item>
+            <Button
+              endIcon={<Forward />}
+              onClick={() => navigate('/cadastro/assets')}
+              item
+            >
               Avançar
             </Button>
           </Grid>

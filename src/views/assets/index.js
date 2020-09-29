@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import SaveIcon from '@material-ui/icons/Save';
+import Back from '../../icons/Back'
 import { makeStyles } from '@material-ui/core/styles';
 import { cardStyle } from '../data/index';
 
@@ -167,7 +168,7 @@ const AssetsForm = () => {
             justify="space-between"
             container
           >
-            <Button onClick={() => navigate('/cadastro/contact')} item>
+            <Button startIcon={<Back />} onClick={() => navigate('/cadastro/contact')} item>
               Voltar
             </Button>
             <Button startIcon={<SaveIcon />} type="submit" item>
