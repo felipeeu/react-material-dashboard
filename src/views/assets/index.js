@@ -51,17 +51,33 @@ const NumberFormatCustom = props => {
 };
 
 const AssetsForm = () => {
+  const assetData = {
+    ramo_atividade: '',
+    faturamento_mensal: '',
+    faturamento_2019: '',
+    faturamento_2018: '',
+    instalacoes: '',
+    valor_aluguel: '',
+    numero_funcionarios: '',
+    valor_folha: '',
+    outros: ''
+  };
+
+  const localDataJson = localStorage.getItem('asset');
+  const noParsedlocalData = JSON.parse(localDataJson) || assetData;
+  const localData = {
+    ...noParsedlocalData,
+    numero_funcionarios: Number(noParsedlocalData.numero_funcionarios)
+  };
   const [validBlur, setValid] = React.useState({
     ramo_atividade: false,
     numero_funcionarios: false,
     outros: false,
     faturamento_mensal: false,
-    faturamento_2019:false,
-    faturamento_2018:false,
-    valor_aluguel:false,
-    valor_folha:false,
-
-
+    faturamento_2019: false,
+    faturamento_2018: false,
+    valor_aluguel: false,
+    valor_folha: false
   });
   const classes = useStyles();
   const navigate = useNavigate();
@@ -71,7 +87,7 @@ const AssetsForm = () => {
       faturamento_mensal: 0,
       faturamento_2019: 0,
       faturamento_2018: 0,
-      instalacoes: '',
+      instalacoes: 'alugada',
       valor_aluguel: 0,
       numero_funcionarios: 0,
       valor_folha: 0,
@@ -86,7 +102,7 @@ const AssetsForm = () => {
 
       faturamento_2018: Yup.string().required('Campo Obrigatório'),
 
-      instalacoes: Yup.string().required('Campo Obrigatório'),
+      instalacoes: Yup.string(),//.required('Campo Obrigatório'),
       valor_aluguel: Yup.string(),
       numero_funcionarios: Yup.number()
         .required('Campo Obrigatório')
@@ -98,11 +114,15 @@ const AssetsForm = () => {
     }),
 
     onSubmit: values => {
+      localStorage.setItem('asset', JSON.stringify(values, null, 2));
+      localStorage.clear();
       alert(JSON.stringify(values, null, 2));
     }
   });
-  console.log('valid?', formik.isValid, 'dirty?', formik.dirty);
 
+ 
+
+  console.log('isValid ', formik.isValid);
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box alignItems="center" display="flex" flexDirection="column">
@@ -120,7 +140,9 @@ const AssetsForm = () => {
                   onBlur={() =>
                     setValid({ ...validBlur, ramo_atividade: true })
                   }
-                  value={formik.values.ramo_atividade}
+                  value={
+                    formik.values.ramo_atividade || localData.ramo_atividade
+                  }
                   label="Ramo de Atividade"
                   variant="outlined"
                   fullWidth
@@ -144,7 +166,10 @@ const AssetsForm = () => {
                   onBlur={() =>
                     setValid({ ...validBlur, faturamento_mensal: true })
                   }
-                  value={formik.values.faturamento_mensal}
+                  value={
+                    formik.values.faturamento_mensal ||
+                    localData.faturamento_mensal
+                  }
                   label="Faturamento Médio Mensal"
                   variant="outlined"
                   fullWidth
@@ -165,7 +190,9 @@ const AssetsForm = () => {
                   onBlur={() =>
                     setValid({ ...validBlur, faturamento_2019: true })
                   }
-                  value={formik.values.faturamento_2019}
+                  value={
+                    formik.values.faturamento_2019 || localData.faturamento_2019
+                  }
                   label="Faturamento 2019"
                   variant="outlined"
                   fullWidth
@@ -189,7 +216,9 @@ const AssetsForm = () => {
                   onBlur={() =>
                     setValid({ ...validBlur, faturamento_2018: true })
                   }
-                  value={formik.values.faturamento_2018}
+                  value={
+                    formik.values.faturamento_2018 || localData.faturamento_2018
+                  }
                   label="Faturamento 2018"
                   variant="outlined"
                   fullWidth
@@ -211,7 +240,7 @@ const AssetsForm = () => {
                   <RadioGroup
                     id="instalacoes"
                     name="instalacoes"
-                    value={formik.values.instalacoes}
+                    value={formik.values.instalacoes || localData.instalacoes}
                     onChange={formik.handleChange}
                     container
                     className={classes.radioGroup}
@@ -244,11 +273,14 @@ const AssetsForm = () => {
                   name="valor_aluguel"
                   type="text"
                   onChange={formik.handleChange}
-                  onBlur={() =>
-                    setValid({ ...validBlur, valor_aluguel: true })
+                  onBlur={() => setValid({ ...validBlur, valor_aluguel: true })}
+                  value={formik.values.valor_aluguel || localData.valor_aluguel}
+                  disabled={
+                    localData.instalacoes === 'propria' ||
+                    localData.instalacoes === 'outras' ||
+                    formik.values.instalacoes === 'outras' ||
+                    formik.values.instalacoes === 'propria'
                   }
-                  value={formik.values.valor_aluguel}
-                  disabled={formik.values.instalacoes != 'alugada'}
                   label="Valor Aluguel"
                   variant="outlined"
                   fullWidth
@@ -271,7 +303,10 @@ const AssetsForm = () => {
                   onBlur={() =>
                     setValid({ ...validBlur, numero_funcionarios: true })
                   }
-                  value={formik.values.numero_funcionarios}
+                  value={
+                    formik.values.numero_funcionarios ||
+                    localData.numero_funcionarios
+                  }
                   label="Quantidade de Funcionários"
                   variant="outlined"
                   fullWidth
@@ -292,10 +327,8 @@ const AssetsForm = () => {
                   name="valor_folha"
                   type="text"
                   onChange={formik.handleChange}
-                  onBlur={() =>
-                    setValid({ ...validBlur, valor_folha: true })
-                  }
-                  value={formik.values.valor_folha}
+                  onBlur={() => setValid({ ...validBlur, valor_folha: true })}
+                  value={formik.values.valor_folha || localData.valor_folha}
                   label="Valor da folha"
                   variant="outlined"
                   fullWidth
@@ -317,7 +350,7 @@ const AssetsForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setValid({ ...validBlur, outros: true })}
-                  value={formik.values.outros}
+                  value={formik.values.outros || localData.outros}
                   label="Outros"
                   variant="outlined"
                   fullWidth

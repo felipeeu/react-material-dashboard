@@ -61,6 +61,18 @@ const states = [
 ];
 
 const AddressForm = () => {
+  const addressData = {
+    endereco: '',
+    numero: '',
+    complemento: '',
+    bairro: '',
+    cep: '',
+    cidade: '',
+    estado: '',
+    pais: ''
+  };
+  const localDataJson = localStorage.getItem('address');
+  const localData = JSON.parse(localDataJson) || addressData;
   const [validBlur, setValid] = React.useState({
     endereco: false,
     numero: false,
@@ -97,8 +109,9 @@ const AddressForm = () => {
       pais: Yup.string().required('Campo Obrigatório')
     }),
     onSubmit: values => {
+      localStorage.setItem('address', JSON.stringify(values, null, 2));
       navigate('/cadastro/contact');
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
     }
   });
 
@@ -120,7 +133,7 @@ const AddressForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setValid({ ...validBlur, endereco: true })}
-                  value={formik.values.endereco}
+                  value={formik.values.endereco || localData.endereco}
                   label="Endereço"
                   variant="outlined"
                   helperText={formik.errors.endereco}
@@ -143,7 +156,7 @@ const AddressForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setValid({ ...validBlur, numero: true })}
-                  value={formik.values.numero}
+                  value={formik.values.numero || localData.numero}
                   label="Número"
                   variant="outlined"
                   helperText={formik.errors.numeros}
@@ -164,9 +177,9 @@ const AddressForm = () => {
                   id="complemento"
                   name="complemento"
                   type="text"
-                  onChange={formik.handleChange}
+                  onChange={formik.handleChange || localData.complemento}
                   onBlur={() => setValid({ ...validBlur, complemento: true })}
-                  value={formik.values.complemento}
+                  value={formik.values.complemento || localData.complemento}
                   label="Complemento"
                   variant="outlined"
                   helperText={formik.errors.complemento}
@@ -189,7 +202,7 @@ const AddressForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setValid({ ...validBlur, bairro: true })}
-                  value={formik.values.bairro}
+                  value={formik.values.bairro || localData.bairro}
                   label="Bairro"
                   variant="outlined"
                   helperText={formik.errors.bairro}
@@ -211,7 +224,7 @@ const AddressForm = () => {
                   name="cep"
                   type="text"
                   onChange={formik.handleChange}
-                  value={formik.values.cep}
+                  value={formik.values.cep || localData.cep}
                   label="CEP"
                   variant="outlined"
                   helperText={formik.errors.cep}
@@ -232,7 +245,7 @@ const AddressForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setValid({ ...validBlur, cidade: true })}
-                  value={formik.values.cidade}
+                  value={formik.values.cidade || localData.cidade}
                   label="Cidade"
                   variant="outlined"
                   helperText={formik.errors.cidade}
@@ -258,7 +271,7 @@ const AddressForm = () => {
                     name="estado"
                     type="select"
                     onChange={formik.handleChange}
-                    value={formik.values.estado}
+                    value={formik.values.estado || localData.estado}
                     label="Estado"
                     variant="outlined"
                     helperText={'Selecione um estado'}
@@ -280,7 +293,7 @@ const AddressForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setValid({ ...validBlur, pais: true })}
-                  value={formik.values.pais}
+                  value={formik.values.pais || localData.pais}
                   label="País"
                   variant="outlined"
                   helperText={formik.errors.pais}

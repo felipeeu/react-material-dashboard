@@ -27,6 +27,16 @@ const useStyles = makeStyles({
 });
 
 const ContactForm = () => {
+  const contactData = {
+    pessoa_contato: '',
+    cargo: '',
+    telefone: '',
+    celular: '',
+    email: '',
+    site: ''
+  };
+  const localDataJson = localStorage.getItem('contact');
+  const localData = JSON.parse(localDataJson) || contactData;
   const [validBlur, setValid] = React.useState({
     pessoa_contato: false,
     cargo: false
@@ -44,9 +54,8 @@ const ContactForm = () => {
     },
 
     onSubmit: values => {
-      navigate('/cadastro/assets')
-      console.log('values', values);
-      alert(JSON.stringify(values, null, 2));
+      localStorage.setItem('contact', JSON.stringify(values, null, 2));
+      navigate('/cadastro/assets');
     },
 
     validationSchema: Yup.object({
@@ -90,7 +99,9 @@ const ContactForm = () => {
                   onBlur={() =>
                     setValid({ ...validBlur, pessoa_contato: true })
                   }
-                  value={formik.values.pessoa_contato}
+                  value={
+                    formik.values.pessoa_contato || localData.pessoa_contato
+                  }
                   label="Pessoa de Contato"
                   variant="outlined"
                   helperText={formik.errors.pessoa_contato}
@@ -113,7 +124,7 @@ const ContactForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setValid({ ...validBlur, cargo: true })}
-                  value={formik.values.cargo}
+                  value={formik.values.cargo || localData.cargo}
                   label="Cargo"
                   variant="outlined"
                   helperText={formik.errors.cargo}
@@ -135,7 +146,7 @@ const ContactForm = () => {
                   name="telefone"
                   type="tel"
                   onChange={formik.handleChange}
-                  value={formik.values.telefone}
+                  value={formik.values.telefone || localData.telefone}
                   label="Telefone"
                   variant="outlined"
                   helperText={formik.errors.telefone}
@@ -155,7 +166,7 @@ const ContactForm = () => {
                   name="celular"
                   // type="text"
                   onChange={formik.handleChange}
-                  value={formik.values.celular}
+                  value={formik.values.celular || localData.celular}
                   label="Celular"
                   variant="outlined"
                   helperText={formik.errors.celular}
@@ -175,7 +186,7 @@ const ContactForm = () => {
                   name="email"
                   type="email"
                   onChange={formik.handleChange}
-                  value={formik.values.email}
+                  value={formik.values.email || localData.email}
                   label="E-mail"
                   variant="outlined"
                   helperText={formik.errors.email}
@@ -195,7 +206,7 @@ const ContactForm = () => {
                   name="site"
                   type="text"
                   onChange={formik.handleChange}
-                  value={formik.values.site}
+                  value={formik.values.site || localData.site}
                   label="Site"
                   variant="outlined"
                   fullWidth

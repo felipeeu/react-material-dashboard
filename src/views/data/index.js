@@ -43,7 +43,6 @@ export const inputValid = {
   )
 };
 
-
 const DataForm = () => {
   const [dataState, setDataState] = React.useState({
     razao_social: '',
@@ -53,15 +52,14 @@ const DataForm = () => {
     data_abertura: '',
     tipo_empresa: ''
   });
+  const localDataJson = localStorage.getItem('data');
+  const localData = JSON.parse(localDataJson) || dataState;
   const [validBlur, setBlur] = React.useState({ social: false, name: false });
-  
+
   const classes = useStyles();
   const navigate = useNavigate();
   const formik = useFormik({
-    initialValues: {
-      ...dataState
-    },
-
+    initialValues: dataState,
     validationSchema: Yup.object({
       razao_social: Yup.string().required('Campo Obrigatório'),
       nome_fantasia: Yup.string().required('Campo Obrigatório'),
@@ -76,17 +74,17 @@ const DataForm = () => {
         .matches(/^[0-9]*$/, 'Você precisa digitar somente números')
         .length(9, 'Quantidade digitos fora do padrão')
         .required('Campo Obrigatório'),
-      data_abertura: Yup.string() .required('Campo Obrigatório'),
-      tipo_empresa: Yup.string() .required('Campo Obrigatório')
+      data_abertura: Yup.string().required('Campo Obrigatório'),
+      tipo_empresa: Yup.string().required('Campo Obrigatório')
     }),
 
     onSubmit: values => {
-      navigate('/cadastro/address')
-      alert(JSON.stringify(values, null, 2));
-      
+      localStorage.setItem('data', JSON.stringify(values, null, 2));
+      navigate('/cadastro/address');
+      // alert(JSON.stringify(values, null, 2));
     }
   });
-  console.log("values",formik.isValid)
+ 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box alignItems="center" display="flex" flexDirection="column">
@@ -102,7 +100,7 @@ const DataForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setBlur({ ...validBlur, social: true })}
-                  value={formik.values.razao_social}
+                  value={formik.values.razao_social || localData.razao_social}
                   label="Razão Social"
                   variant="outlined"
                   helperText={formik.errors.razao_social}
@@ -125,7 +123,7 @@ const DataForm = () => {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={() => setBlur({ ...validBlur, name: true })}
-                  value={formik.values.nome_fantasia}
+                  value={formik.values.nome_fantasia || localData.nome_fantasia}
                   label="Nome Fantasia"
                   variant="outlined"
                   helperText={formik.errors.nome_fantasia}
@@ -147,13 +145,12 @@ const DataForm = () => {
                   name="cnpj"
                   type="cnpj"
                   onChange={formik.handleChange}
-                  value={formik.values.cnpj}
+                  value={formik.values.cnpj || localData.cnpj}
                   label="CNPJ"
                   variant="outlined"
                   fullWidth
                   maxlength="14"
                   helperText={formik.errors.cnpj}
-                  
                   InputProps={
                     !formik.values.cnpj || formik.errors.cnpj ? (
                       <>Erro</>
@@ -169,7 +166,10 @@ const DataForm = () => {
                   name="inscricao_estadual"
                   type="text"
                   onChange={formik.handleChange}
-                  value={formik.values.inscricao_estadual}
+                  value={
+                    formik.values.inscricao_estadual ||
+                    localData.inscricao_estadual
+                  }
                   label="Inscrição Est./Munic"
                   variant="outlined"
                   fullWidth
@@ -190,7 +190,7 @@ const DataForm = () => {
                   name="data_abertura"
                   type="date"
                   onChange={formik.handleChange}
-                  value={formik.values.data_abertura}
+                  value={formik.values.data_abertura || localData.data_abertura}
                   variant="outlined"
                   helperText={formik.errors.data_abertura}
                   fullWidth
@@ -209,7 +209,7 @@ const DataForm = () => {
                   <Select
                     id="tipo_empresa"
                     name="tipo_empresa"
-                    value={formik.values.tipo_empresa}
+                    value={formik.values.tipo_empresa || localData.tipo_empresa}
                     onChange={e =>
                       formik.setFieldValue('tipo_empresa', e.target.value)
                     }
@@ -243,7 +243,7 @@ const DataForm = () => {
               endIcon={<Forward />}
               item
               type="submit"
-              disabled ={!formik.isValid ||!formik.dirty}
+              disabled={!formik.isValid || !formik.dirty}
             >
               Avançar
             </Button>
