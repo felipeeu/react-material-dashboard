@@ -65,6 +65,7 @@ const DataForm = () => {
     validationSchema: Yup.object({
       razao_social: Yup.string().required('Campo Obrigatório'),
       nome_fantasia: Yup.string().required('Campo Obrigatório'),
+      numero: Yup.string().required('Campo Obrigatório'),
       cnpj: Yup.string()
         .length(14, 'Quantidade de caracteres fora do padrão para CNPJ')
         .matches(

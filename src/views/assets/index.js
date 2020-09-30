@@ -82,7 +82,7 @@ const AssetsForm = () => {
       faturamento_2018: Yup.number()
         .required('Campo Obrigatório')
         .positive(),
-      instalacoes: Yup.string(),
+      instalacoes: Yup.string().required('Campo Obrigatório'),
       valor_aluguel: Yup.number(),
       numero_funcionarios: Yup.number()
         .required('Campo Obrigatório')
@@ -94,7 +94,7 @@ const AssetsForm = () => {
       outros: Yup.string()
     }),
 
-    onSubmit: values => {
+    onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     }
   });

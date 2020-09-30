@@ -45,8 +45,14 @@ const ContactForm = () => {
     validationSchema: Yup.object({
       pessoa_contato: Yup.string().required('Campo Obrigatório'),
       cargo: Yup.string().required('Campo Obrigatório'),
-      telefone: Yup.string().required('Campo Obrigatório'),
-      celular: Yup.string().required('Campo Obrigatório'),
+      telefone: Yup.string()
+        .matches(/^[0-9]*$/, 'Você precisa digitar somente números')
+        .length(10, 'Precisa de 10 digitos incluindo o DDD')
+        .required('Campo Obrigatório'),
+      celular: Yup.string()
+        .matches(/^[0-9]*$/, 'Você precisa digitar somente números')
+        .length(11, 'Precisa de 11 digitos incluindo o DDD')
+        .required('Campo Obrigatório'),
       email: Yup.string()
         .email('Digite um e-mail válido')
         .required('Campo Obrigatório'),
@@ -124,13 +130,20 @@ const ContactForm = () => {
                 <TextField
                   id="telefone"
                   name="telefone"
-                  // type="telefone"
+                  type="tel"
                   onChange={formik.handleChange}
                   value={formik.values.telefone}
                   label="Telefone"
                   variant="outlined"
                   helperText={formik.errors.telefone}
                   fullWidth
+                  InputProps={
+                    !formik.values.telefone || formik.errors.telefone ? (
+                      <>Erro</>
+                    ) : (
+                      inputValid
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
@@ -144,6 +157,13 @@ const ContactForm = () => {
                   variant="outlined"
                   helperText={formik.errors.celular}
                   fullWidth
+                  InputProps={
+                    !formik.values.celular || formik.errors.celular ? (
+                      <>Erro</>
+                    ) : (
+                      inputValid
+                    )
+                  }
                 />
               </Grid>
               <Grid item md={4} xs="auto">
