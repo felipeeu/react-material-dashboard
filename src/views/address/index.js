@@ -89,14 +89,15 @@ const AddressForm = () => {
       complemento: Yup.string().required('Campo Obrigatório'),
       bairro: Yup.string().required('Campo Obrigatório'),
       cep: Yup.string()
-        .matches(/^[0-9]*$/, "Você precisa digitar somente números")
-        .length(8, "Quantidade de dígitos fora do padrão para CEP")
+        .matches(/^[0-9]*$/, 'Você precisa digitar somente números')
+        .length(8, 'Quantidade de dígitos fora do padrão para CEP')
         .required('Campo Obrigatório'),
       cidade: Yup.string().required('Campo Obrigatório'),
       estado: Yup.string().required('Campo Obrigatório'),
       pais: Yup.string().required('Campo Obrigatório')
     }),
     onSubmit: values => {
+      navigate('/cadastro/contact');
       alert(JSON.stringify(values, null, 2));
     }
   });
@@ -137,7 +138,6 @@ const AddressForm = () => {
               </Grid>
               <Grid item md={2} xs="auto">
                 <TextField
-                
                   id="numero"
                   name="numero"
                   type="text"
@@ -262,7 +262,7 @@ const AddressForm = () => {
                     label="Estado"
                     variant="outlined"
                     helperText={'Selecione um estado'}
-                    InputLabelProps={{ shrink: true }} 
+                    InputLabelProps={{ shrink: true }}
                     // fullWidth
                   >
                     {states.map((state, idx) => (
@@ -313,8 +313,9 @@ const AddressForm = () => {
             </Button>
             <Button
               endIcon={<Forward />}
-              onClick={() => navigate('/cadastro/contact')}
+              disabled={!formik.isValid || !formik.dirty}
               item
+              type="submit"
             >
               Avançar
             </Button>

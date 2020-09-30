@@ -65,7 +65,6 @@ const DataForm = () => {
     validationSchema: Yup.object({
       razao_social: Yup.string().required('Campo Obrigatório'),
       nome_fantasia: Yup.string().required('Campo Obrigatório'),
-      numero: Yup.string().required('Campo Obrigatório'),
       cnpj: Yup.string()
         .length(14, 'Quantidade de caracteres fora do padrão para CNPJ')
         .matches(
@@ -77,15 +76,17 @@ const DataForm = () => {
         .matches(/^[0-9]*$/, 'Você precisa digitar somente números')
         .length(9, 'Quantidade digitos fora do padrão')
         .required('Campo Obrigatório'),
-      data_abertura: Yup.string().required('Campo Obrigatório'),
-      tipo_empresa: Yup.string().required('Campo Obrigatório')
+      data_abertura: Yup.string() .required('Campo Obrigatório'),
+      tipo_empresa: Yup.string() .required('Campo Obrigatório')
     }),
 
     onSubmit: values => {
-      setDataState(values);
+      navigate('/cadastro/address')
+      alert(JSON.stringify(values, null, 2));
+      
     }
   });
-
+  console.log("values",formik.isValid)
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box alignItems="center" display="flex" flexDirection="column">
@@ -240,9 +241,9 @@ const DataForm = () => {
           <Grid display="flex" direction="row-reverse" container>
             <Button
               endIcon={<Forward />}
-              onClick={() => navigate('/cadastro/address')}
               item
-              // disabled={}
+              type="submit"
+              disabled ={!formik.isValid ||!formik.dirty}
             >
               Avançar
             </Button>

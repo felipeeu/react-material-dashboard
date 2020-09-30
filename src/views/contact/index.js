@@ -42,6 +42,13 @@ const ContactForm = () => {
       email: '',
       site: ''
     },
+
+    onSubmit: values => {
+      navigate('/cadastro/assets')
+      console.log('values', values);
+      alert(JSON.stringify(values, null, 2));
+    },
+
     validationSchema: Yup.object({
       pessoa_contato: Yup.string().required('Campo Obrigatório'),
       cargo: Yup.string().required('Campo Obrigatório'),
@@ -60,11 +67,7 @@ const ContactForm = () => {
         /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
         'Digite um site válido'
       )
-    }),
-
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-    }
+    })
   });
 
   return (
@@ -223,8 +226,9 @@ const ContactForm = () => {
             </Button>
             <Button
               endIcon={<Forward />}
-              onClick={() => navigate('/cadastro/assets')}
+              disabled={!formik.isValid || !formik.dirty}
               item
+              type="submit"
             >
               Avançar
             </Button>
