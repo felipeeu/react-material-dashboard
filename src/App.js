@@ -7,6 +7,8 @@ import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import routes from 'src/routes';
 
+const urlAPI = 'https://boiling-hollows-66640.herokuapp.com/';
+
 const App = () => {
   const routing = useRoutes(routes);
 
