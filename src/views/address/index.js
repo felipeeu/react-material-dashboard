@@ -89,10 +89,12 @@ const AddressForm = () => {
       complemento: Yup.string().required('Campo Obrigatório'),
       bairro: Yup.string().required('Campo Obrigatório'),
       cep: Yup.string()
-        .matches(/^[0-9]*$/)
-        .length(8)
+        .matches(/^[0-9]*$/, "Você precisa digitar somente números")
+        .length(8, "Quantidade de dígitos fora do padrão para CEP")
         .required('Campo Obrigatório'),
-      cidade: Yup.string().required('Campo Obrigatório')
+      cidade: Yup.string().required('Campo Obrigatório'),
+      estado: Yup.string().required('Campo Obrigatório'),
+      pais: Yup.string().required('Campo Obrigatório')
     }),
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
@@ -120,6 +122,7 @@ const AddressForm = () => {
                   value={formik.values.endereco}
                   label="Endereço"
                   variant="outlined"
+                  helperText={formik.errors.endereco}
                   fullWidth
                   InputProps={
                     validBlur.endereco &&
@@ -134,6 +137,7 @@ const AddressForm = () => {
               </Grid>
               <Grid item md={2} xs="auto">
                 <TextField
+                
                   id="numero"
                   name="numero"
                   type="text"
@@ -142,6 +146,7 @@ const AddressForm = () => {
                   value={formik.values.numero}
                   label="Número"
                   variant="outlined"
+                  helperText={formik.errors.numeros}
                   fullWidth
                   InputProps={
                     validBlur.numero &&
@@ -164,6 +169,7 @@ const AddressForm = () => {
                   value={formik.values.complemento}
                   label="Complemento"
                   variant="outlined"
+                  helperText={formik.errors.complemento}
                   fullWidth
                   InputProps={
                     validBlur.complemento &&
@@ -186,6 +192,7 @@ const AddressForm = () => {
                   value={formik.values.bairro}
                   label="Bairro"
                   variant="outlined"
+                  helperText={formik.errors.bairro}
                   fullWidth
                   InputProps={
                     validBlur.bairro &&
@@ -207,6 +214,7 @@ const AddressForm = () => {
                   value={formik.values.cep}
                   label="CEP"
                   variant="outlined"
+                  helperText={formik.errors.cep}
                   fullWidth
                   InputProps={
                     !formik.values.cep || formik.errors.cep ? (
@@ -227,6 +235,7 @@ const AddressForm = () => {
                   value={formik.values.cidade}
                   label="Cidade"
                   variant="outlined"
+                  helperText={formik.errors.cidade}
                   fullWidth
                   InputProps={
                     validBlur.cidade &&
@@ -252,7 +261,9 @@ const AddressForm = () => {
                     value={formik.values.estado}
                     label="Estado"
                     variant="outlined"
-                    fullWidth
+                    helperText={'Selecione um estado'}
+                    InputLabelProps={{ shrink: true }} 
+                    // fullWidth
                   >
                     {states.map((state, idx) => (
                       <MenuItem key={idx} value={state.initials}>
@@ -272,6 +283,7 @@ const AddressForm = () => {
                   value={formik.values.pais}
                   label="País"
                   variant="outlined"
+                  helperText={formik.errors.pais}
                   fullWidth
                   InputProps={
                     validBlur.pais &&

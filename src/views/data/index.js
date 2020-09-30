@@ -15,7 +15,6 @@ import {
   InputLabel,
   InputAdornment
 } from '@material-ui/core';
-
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import DoneIcon from '@material-ui/icons/Done';
@@ -44,6 +43,7 @@ export const inputValid = {
   )
 };
 
+
 const DataForm = () => {
   const [dataState, setDataState] = React.useState({
     razao_social: '',
@@ -54,6 +54,7 @@ const DataForm = () => {
     tipo_empresa: ''
   });
   const [validBlur, setBlur] = React.useState({ social: false, name: false });
+  
   const classes = useStyles();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -66,11 +67,14 @@ const DataForm = () => {
       nome_fantasia: Yup.string().required('Campo Obrigatório'),
       cnpj: Yup.string()
         .length(14, 'Quantidade de caracteres fora do padrão para CNPJ')
-        .matches(/[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/)
+        .matches(
+          /[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/,
+          'Quantidade de caracteres fora do padrão para CNPJ'
+        )
         .required('Campo Obrigatório'),
       inscricao_estadual: Yup.string()
-        .length(9)
-        .matches(/^[0-9]*$/)
+        .matches(/^[0-9]*$/, 'Você precisa digitar somente números')
+        .length(9, 'Quantidade digitos fora do padrão')
         .required('Campo Obrigatório'),
       data_abertura: Yup.string().required('Campo Obrigatório'),
       tipo_empresa: Yup.string().required('Campo Obrigatório')
@@ -80,8 +84,6 @@ const DataForm = () => {
       setDataState(values);
     }
   });
-
- 
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -101,6 +103,7 @@ const DataForm = () => {
                   value={formik.values.razao_social}
                   label="Razão Social"
                   variant="outlined"
+                  helperText={formik.errors.razao_social}
                   fullWidth
                   InputProps={
                     validBlur.social &&
@@ -123,6 +126,7 @@ const DataForm = () => {
                   value={formik.values.nome_fantasia}
                   label="Nome Fantasia"
                   variant="outlined"
+                  helperText={formik.errors.nome_fantasia}
                   fullWidth
                   InputProps={
                     validBlur.name &&
@@ -146,6 +150,8 @@ const DataForm = () => {
                   variant="outlined"
                   fullWidth
                   maxlength="14"
+                  helperText={formik.errors.cnpj}
+                  
                   InputProps={
                     !formik.values.cnpj || formik.errors.cnpj ? (
                       <>Erro</>
@@ -165,6 +171,7 @@ const DataForm = () => {
                   label="Inscrição Est./Munic"
                   variant="outlined"
                   fullWidth
+                  helperText={formik.errors.inscricao_estadual}
                   InputProps={
                     !formik.values.inscricao_estadual ||
                     formik.errors.inscricao_estadual ? (
@@ -183,6 +190,7 @@ const DataForm = () => {
                   onChange={formik.handleChange}
                   value={formik.values.data_abertura}
                   variant="outlined"
+                  helperText={formik.errors.data_abertura}
                   fullWidth
                   InputProps={
                     !formik.values.data_abertura || formik.errors.data_abertura
@@ -204,8 +212,8 @@ const DataForm = () => {
                       formik.setFieldValue('tipo_empresa', e.target.value)
                     }
                     variant="outlined"
+                    helperText={formik.errors.tipo_empresa}
                     label=" Tipo de Empresa"
-                    
                   >
                     <MenuItem value={`s_a_capital_aberto`}>
                       S.A. Capital Aberto
