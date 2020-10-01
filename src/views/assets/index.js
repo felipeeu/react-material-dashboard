@@ -86,9 +86,7 @@ const AssetsForm = () => {
         ...contactPayload,
         ramo_atividade: values.ramo_atividade,
         instalacoes: values.instalacoes,
-        valor_aluguel: values.valor_aluguel,
         numero_funcionarios: values.numero_funcionarios,
-        valor_folha: values.valor_folha,
         outros: values.outros,
         faturamento_mensal: parseCurrency(values.faturamento_mensal),
         faturamento_2019: parseCurrency(values.faturamento_2019),
@@ -100,6 +98,7 @@ const AssetsForm = () => {
       .then(function(response) {
         if (response) {
           setOpenModal(true);
+          localStorage.clear();
         }
       })
       .then(function(data) {
@@ -160,7 +159,7 @@ const AssetsForm = () => {
     onSubmit: values => {
       saveData(values);
       localStorage.setItem('asset', JSON.stringify(values, null, 2));
-      // localStorage.clear();
+      
       // alert(JSON.stringify(values, null, 2));
     }
   });
@@ -428,7 +427,7 @@ const AssetsForm = () => {
               Voltar
             </Button>
             <Button
-              // disabled={!formik.isValid || !formik.dirty}
+              disabled={!formik.isValid || !formik.dirty}
               startIcon={<SaveIcon />}
               type="submit"
               item

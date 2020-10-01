@@ -12,6 +12,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Toolbar = ({ className, ...rest }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <div
@@ -35,17 +37,18 @@ const Toolbar = ({ className, ...rest }) => {
         display="flex"
         justifyContent="flex-end"
       >
-        <Button className={classes.importButton}>
+        {/* <Button className={classes.importButton}>
           Import
         </Button>
         <Button className={classes.exportButton}>
           Export
-        </Button>
+        </Button> */}
         <Button
           color="primary"
           variant="contained"
+          onClick={()=>navigate('/cadastro/data')}
         >
-          Add customer
+          Adicionar Empresa
         </Button>
       </Box>
       <Box mt={3}>
@@ -66,7 +69,7 @@ const Toolbar = ({ className, ...rest }) => {
                     </InputAdornment>
                   )
                 }}
-                placeholder="Search customer"
+                placeholder="Buscar"
                 variant="outlined"
               />
             </Box>

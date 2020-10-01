@@ -5,22 +5,13 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Divider,
-  Grid,
-  Paper,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  InputAdornment
+  Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   box: {
     position: 'absolute',
-    top: '20px',
     left: '45%',
     top: '30%'
   }
