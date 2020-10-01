@@ -24,11 +24,11 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
+// const user = {
+//   avatar: '/static/images/avatars/avatar_6.png',
+//   jobTitle: 'Senior Developer',
+//   name: 'Katarina Smith'
+// };
 
 const items = [
   {
@@ -36,46 +36,47 @@ const items = [
     icon: UserPlusIcon,
     title: 'Cadastro'
   },
+  // {
+  //   href: '/app/dashboard',
+  //   icon: BarChartIcon,
+  //   title: 'Dashboard'
+  // },
   {
-    href: '/app/dashboard',
-    icon: BarChartIcon,
-    title: 'Dashboard'
-  },
-  {
-    href: '/app/customers',
+    // href: '/app/customers',
+    href: '/app/empresas',
     icon: UsersIcon,
-    title: 'Customers'
+    title: 'Empresas'
   },
-  {
-    href: '/app/products',
-    icon: ShoppingBagIcon,
-    title: 'Products'
-  },
-  {
-    href: '/app/account',
-    icon: UserIcon,
-    title: 'Account'
-  },
-  {
-    href: '/app/settings',
-    icon: SettingsIcon,
-    title: 'Settings'
-  },
+  // {
+  //   href: '/app/products',
+  //   icon: ShoppingBagIcon,
+  //   title: 'Products'
+  // },
+  // {
+  //   href: '/app/account',
+  //   icon: UserIcon,
+  //   title: 'Account'
+  // },
+  // {
+  //   href: '/app/settings',
+  //   icon: SettingsIcon,
+  //   title: 'Settings'
+  // },
   {
     href: '/login',
     icon: LockIcon,
     title: 'Login'
   },
-  {
-    href: '/register',
-    icon: UserPlusIcon,
-    title: 'Register'
-  },
-  {
-    href: '/404',
-    icon: AlertCircleIcon,
-    title: 'Error'
-  }
+  // {
+  //   href: '/register',
+  //   icon: UserPlusIcon,
+  //   title: 'Register'
+  // },
+  // {
+  //   href: '/404',
+  //   icon: AlertCircleIcon,
+  //   title: 'Error'
+  // }
 ];
 
 const useStyles = makeStyles(() => ({
@@ -111,7 +112,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
-      <Box
+      {/* <Box
         alignItems="center"
         display="flex"
         flexDirection="column"
@@ -136,7 +137,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         >
           {user.jobTitle}
         </Typography>
-      </Box>
+      </Box> */}
       <Divider />
       <Box p={2}>
         <List>
@@ -151,12 +152,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         </List>
       </Box>
       <Box flexGrow={1} />
-      <Box
+      {/* <Box
         p={2}
         m={2}
         bgcolor="background.dark"
-      >
-        <Typography
+      > */}
+        {/* <Typography
           align="center"
           gutterBottom
           variant="h4"
@@ -168,8 +169,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           variant="body2"
         >
           Upgrade to PRO version and access 20 more screens
-        </Typography>
-        <Box
+        </Typography> */}
+        {/* <Box
           display="flex"
           justifyContent="center"
           mt={2}
@@ -182,8 +183,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           >
             See PRO version
           </Button>
-        </Box>
-      </Box>
+        </Box> */}
+      {/* </Box> */}
     </Box>
   );
 

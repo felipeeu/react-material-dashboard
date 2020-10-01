@@ -13,7 +13,8 @@ import {
   FormLabel,
   FormControlLabel,
   RadioGroup,
-  Radio
+  Radio,
+  Modal
 } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import SaveIcon from '@material-ui/icons/Save';
@@ -23,6 +24,7 @@ import { cardStyle } from '../data/index';
 import * as Yup from 'yup';
 import { inputValid } from '../data/index';
 import NumberFormat from 'react-number-format';
+import ModalFinish from './modal-finish';
 
 const useStyles = makeStyles({
   root: {
@@ -61,6 +63,48 @@ const AssetsForm = () => {
     numero_funcionarios: '',
     valor_folha: '',
     outros: ''
+  };
+  const parseCurrency = value =>
+    Number(
+      value
+        .split(',')[0]
+        .slice(2)
+        .split('.')
+        .join('')
+    );
+  const [openModal, setOpenModal] = React.useState(false);
+  const saveData = values => {
+    let parseDataPayload = JSON.parse(localStorage.getItem('data'));
+    let addressPayload = JSON.parse(localStorage.getItem('address'));
+    let contactPayload = JSON.parse(localStorage.getItem('contact'));
+
+    fetch('https://boiling-hollows-66640.herokuapp.com/empresas', {
+      method: 'post',
+      body: JSON.stringify({
+        ...parseDataPayload,
+        ...addressPayload,
+        ...contactPayload,
+        ramo_atividade: values.ramo_atividade,
+        instalacoes: values.instalacoes,
+        valor_aluguel: values.valor_aluguel,
+        numero_funcionarios: values.numero_funcionarios,
+        valor_folha: values.valor_folha,
+        outros: values.outros,
+        faturamento_mensal: parseCurrency(values.faturamento_mensal),
+        faturamento_2019: parseCurrency(values.faturamento_2019),
+        faturamento_2018: parseCurrency(values.faturamento_2018),
+        valor_aluguel: parseCurrency(values.valor_aluguel),
+        valor_folha: parseCurrency(values.valor_folha)
+      })
+    })
+      .then(function(response) {
+        if (response) {
+          setOpenModal(true);
+        }
+      })
+      .then(function(data) {
+        console.log(data);
+      });
   };
 
   const localDataJson = localStorage.getItem('asset');
@@ -102,7 +146,7 @@ const AssetsForm = () => {
 
       faturamento_2018: Yup.string().required('Campo Obrigatório'),
 
-      instalacoes: Yup.string(),//.required('Campo Obrigatório'),
+      instalacoes: Yup.string(), //.required('Campo Obrigatório'),
       valor_aluguel: Yup.string(),
       numero_funcionarios: Yup.number()
         .required('Campo Obrigatório')
@@ -114,17 +158,20 @@ const AssetsForm = () => {
     }),
 
     onSubmit: values => {
+      saveData(values);
       localStorage.setItem('asset', JSON.stringify(values, null, 2));
-      localStorage.clear();
-      alert(JSON.stringify(values, null, 2));
+      // localStorage.clear();
+      // alert(JSON.stringify(values, null, 2));
     }
   });
-
- 
 
   console.log('isValid ', formik.isValid);
   return (
     <form onSubmit={formik.handleSubmit}>
+      <Modal open={openModal}>
+        <ModalFinish setOpenModal={setOpenModal}></ModalFinish>
+      </Modal>
+
       <Box alignItems="center" display="flex" flexDirection="column">
         <Card className={classes.card}>
           <CardHeader subheader="" title="Dados Financeiros" />
@@ -381,7 +428,7 @@ const AssetsForm = () => {
               Voltar
             </Button>
             <Button
-              disabled={!formik.isValid || !formik.dirty}
+              // disabled={!formik.isValid || !formik.dirty}
               startIcon={<SaveIcon />}
               type="submit"
               item
