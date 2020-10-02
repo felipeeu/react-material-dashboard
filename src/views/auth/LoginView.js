@@ -43,15 +43,16 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
+              email: 'felipe@domingues.com',
+              password: '123456'
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-              password: Yup.string().max(255).required('Password is required')
+              email: Yup.string().email('Precisa ser um e-mail válido').max(255).required('Campo obrigatório'),
+              password: Yup.string().max(255).required('Campo obrigatório')
             })}
             onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+              // navigate('/app/dashboard', { replace: true });
+              navigate('/app/', { replace: true });
             }}
           >
             {({
@@ -69,21 +70,21 @@ const LoginView = () => {
                     color="textPrimary"
                     variant="h2"
                   >
-                    Sign in
+                    Login
                   </Typography>
                   <Typography
                     color="textSecondary"
                     gutterBottom
                     variant="body2"
                   >
-                    Sign in on the internal platform
+                    Faça o login na plataforma
                   </Typography>
                 </Box>
-                <Grid
+                {/* <Grid
                   container
                   spacing={3}
-                >
-                  <Grid
+                > */}
+                  {/* <Grid
                     item
                     xs={12}
                     md={6}
@@ -98,8 +99,8 @@ const LoginView = () => {
                     >
                       Login with Facebook
                     </Button>
-                  </Grid>
-                  <Grid
+                  </Grid> */}
+                  {/* <Grid
                     item
                     xs={12}
                     md={6}
@@ -113,25 +114,25 @@ const LoginView = () => {
                     >
                       Login with Google
                     </Button>
-                  </Grid>
-                </Grid>
+                  </Grid> */}
+                {/* </Grid> */}
                 <Box
                   mt={3}
                   mb={1}
                 >
-                  <Typography
+                  {/* <Typography
                     align="center"
                     color="textSecondary"
                     variant="body1"
                   >
                     or login with email address
-                  </Typography>
+                  </Typography> */}
                 </Box>
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
                   helperText={touched.email && errors.email}
-                  label="Email Address"
+                  label="E-mail"
                   margin="normal"
                   name="email"
                   onBlur={handleBlur}
@@ -144,7 +145,7 @@ const LoginView = () => {
                   error={Boolean(touched.password && errors.password)}
                   fullWidth
                   helperText={touched.password && errors.password}
-                  label="Password"
+                  label="Senha"
                   margin="normal"
                   name="password"
                   onBlur={handleBlur}
@@ -162,10 +163,10 @@ const LoginView = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign in now
+                    Login
                   </Button>
                 </Box>
-                <Typography
+                {/* <Typography
                   color="textSecondary"
                   variant="body1"
                 >
@@ -178,7 +179,7 @@ const LoginView = () => {
                   >
                     Sign up
                   </Link>
-                </Typography>
+                </Typography> */}
               </form>
             )}
           </Formik>

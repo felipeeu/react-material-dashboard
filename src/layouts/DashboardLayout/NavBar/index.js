@@ -36,11 +36,12 @@ const items = [
     icon: UserPlusIcon,
     title: 'Cadastro'
   },
-  // {
-  //   href: '/app/dashboard',
-  //   icon: BarChartIcon,
-  //   title: 'Dashboard'
-  // },
+  {
+    // href: '/app/dashboard',
+    href: '/app/',
+    icon: BarChartIcon,
+    title: 'Dashboard'
+  },
   {
     // href: '/app/customers',
     href: '/app/empresas',

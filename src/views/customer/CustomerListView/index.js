@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 const CustomerListView = () => {
   const classes = useStyles();
-  const [customers, setCustomers] = useState(data);
+  const [customers, setCustomers] = useState([]);
 
   React.useEffect(() => {
     axios

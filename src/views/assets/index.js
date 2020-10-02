@@ -25,6 +25,7 @@ import * as Yup from 'yup';
 import { inputValid } from '../data/index';
 import NumberFormat from 'react-number-format';
 import ModalFinish from './modal-finish';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -72,7 +73,10 @@ const AssetsForm = () => {
         .split('.')
         .join('')
     );
-  const [openModal, setOpenModal] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState({
+    open: false,
+    error: false
+  });
   const saveData = values => {
     let parseDataPayload = JSON.parse(localStorage.getItem('data'));
     let addressPayload = JSON.parse(localStorage.getItem('address'));
@@ -80,6 +84,7 @@ const AssetsForm = () => {
 
     fetch('https://boiling-hollows-66640.herokuapp.com/empresas', {
       method: 'post',
+
       body: JSON.stringify({
         ...parseDataPayload,
         ...addressPayload,
@@ -96,14 +101,12 @@ const AssetsForm = () => {
       })
     })
       .then(function(response) {
-        if (response) {
-          setOpenModal(true);
+        if (response.status === 200) {
+          setOpenModal({ open: true, error: false });
           localStorage.clear();
         }
       })
-      .then(function(data) {
-        console.log(data);
-      });
+      .catch(() => setOpenModal({ open: true, error: true }));
   };
 
   const localDataJson = localStorage.getItem('asset');
@@ -159,16 +162,18 @@ const AssetsForm = () => {
     onSubmit: values => {
       saveData(values);
       localStorage.setItem('asset', JSON.stringify(values, null, 2));
-      
+
       // alert(JSON.stringify(values, null, 2));
     }
   });
 
-  console.log('isValid ', formik.isValid);
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Modal open={openModal}>
-        <ModalFinish setOpenModal={setOpenModal}></ModalFinish>
+      <Modal open={openModal.open}>
+        <ModalFinish
+          setOpenModal={setOpenModal}
+          openModal={openModal}
+        ></ModalFinish>
       </Modal>
 
       <Box alignItems="center" display="flex" flexDirection="column">
